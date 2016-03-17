@@ -1,0 +1,439 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>LinkedHashMap | Hexo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="John Doe">
+    
+    <meta name="description" content="LinkedHahsMap其数据结构linkedHashMap 继承于HashMap,但是linkedHashMap的链表是双向链表
+//双向链表头元素
+transient LinkedHashMap.Entry&amp;lt;K,V&amp;gt; head;
+
+//尾元素
+transient LinkedHashMap.Entry&amp;lt;K,V&amp;gt; tail;
+
+//是否对获取做重新排序，默认是false
+final boolean accessOrder;
+
+
+//其存储了上一个，和下一个对象
+static class Entry&amp;lt;K,V&amp;gt; extends HashMap.Node&amp;lt;K,V&amp;gt; {
+    Entry&amp;lt;K,V&amp;gt; before, after;
+    Entry(int hash, K key, V value, Node&amp;lt;K,V&amp;gt; next) {
+        super(hash, key, value, next);
+    }
+}">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="Hexo" title="Hexo"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Hexo">Hexo</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">嘎嘎</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/01/14/LinkedHashMap/" title="LinkedHashMap" itemprop="url">LinkedHashMap</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://yoursite.com" title="John Doe">John Doe</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2016-01-14T01:42:17.000Z" itemprop="datePublished">2016-01-14</time>
+    Updated:<time datetime="2016-02-15T07:08:26.740Z" itemprop="dateModified">2016-02-15</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#LinkedHahsMap"><span class="toc-number">1.</span> <span class="toc-text">LinkedHahsMap</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#其数据结构"><span class="toc-number">1.1.</span> <span class="toc-text">其数据结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#存储"><span class="toc-number">1.2.</span> <span class="toc-text">存储</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#取值"><span class="toc-number">1.3.</span> <span class="toc-text">取值</span></a></li></ol></li></ol>
+		</div>
+		
+		<h2 id="LinkedHahsMap"><a href="#LinkedHahsMap" class="headerlink" title="LinkedHahsMap"></a>LinkedHahsMap</h2><h3 id="其数据结构"><a href="#其数据结构" class="headerlink" title="其数据结构"></a>其数据结构</h3><p>linkedHashMap 继承于HashMap,但是linkedHashMap的链表是双向链表</p>
+<pre><code>//双向链表头元素
+transient LinkedHashMap.Entry&lt;K,V&gt; head;
+
+//尾元素
+transient LinkedHashMap.Entry&lt;K,V&gt; tail;
+
+//是否对获取做重新排序，默认是false
+final boolean accessOrder;
+
+
+//其存储了上一个，和下一个对象
+static class Entry&lt;K,V&gt; extends HashMap.Node&lt;K,V&gt; {
+    Entry&lt;K,V&gt; before, after;
+    Entry(int hash, K key, V value, Node&lt;K,V&gt; next) {
+        super(hash, key, value, next);
+    }
+}
+</code></pre><a id="more"></a>
+<h3 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h3><p>linkedHashMap 没有重写HashMap的put方法，但是其重写了put方法里面的newNode()方法</p>
+<pre><code>Node&lt;K,V&gt; newNode(int hash, K key, V value, Node&lt;K,V&gt; e) {
+    //单向链表
+    LinkedHashMap.Entry&lt;K,V&gt; p =
+        new LinkedHashMap.Entry&lt;K,V&gt;(hash, key, value, e);
+    linkNodeLast(p);
+    return p;
+}
+
+//维护双向链表、保存插入顺序
+private void linkNodeLast(LinkedHashMap.Entry&lt;K,V&gt; p) {
+    LinkedHashMap.Entry&lt;K,V&gt; last = tail;
+    tail = p;
+    if (last == null)
+        head = p;
+    else {
+        p.before = last;
+        last.after = p;
+    }
+}
+</code></pre><h3 id="取值"><a href="#取值" class="headerlink" title="取值"></a>取值</h3><p>linkedHashMap 重写了get()方法</p>
+<pre><code> public V get(Object key) {
+    Node&lt;K,V&gt; e;
+    //使用hashMap的getNode()方法遍历获取value
+    if ((e = getNode(hash(key), key)) == null)
+        return null;
+    //若重新排序则
+    if (accessOrder)
+        afterNodeAccess(e);
+    return e.value;
+}
+
+//将node移动到双向链表的末尾
+void afterNodeAccess(Node&lt;K,V&gt; e) { // move node to last
+    LinkedHashMap.Entry&lt;K,V&gt; last;
+    if (accessOrder &amp;&amp; (last = tail) != e) {
+        LinkedHashMap.Entry&lt;K,V&gt; p =
+            (LinkedHashMap.Entry&lt;K,V&gt;)e, b = p.before, a = p.after;
+        p.after = null;
+        if (b == null)
+            head = a;
+        else
+            b.after = a;
+        if (a != null)
+            a.before = b;
+        else
+            last = b;
+        if (last == null)
+            head = p;
+        else {
+            p.before = last;
+            last.after = p;
+        }
+        tail = p;
+        ++modCount;
+    }
+}
+</code></pre>  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/jdk/">jdk</a><a href="/tags/源码分析/">源码分析</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/jdk/">jdk</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://yoursite.com/2016/01/14/LinkedHashMap/" data-title="LinkedHashMap | Hexo" data-tsina="undefined" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/01/14/set/" title="set">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  set</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/01/13/TreeMap/"  title="TreeMap">
+ <strong>NEXT:</strong><br/> 
+ <span>TreeMap
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#LinkedHahsMap"><span class="toc-number">1.</span> <span class="toc-text">LinkedHahsMap</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#其数据结构"><span class="toc-number">1.1.</span> <span class="toc-text">其数据结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#存储"><span class="toc-number">1.2.</span> <span class="toc-text">存储</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#取值"><span class="toc-number">1.3.</span> <span class="toc-text">取值</span></a></li></ol></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+			<li><a href="/categories/IDE/" title="IDE">IDE<sup>1</sup></a></li>
+		
+			<li><a href="/categories/concurrent/" title="concurrent">concurrent<sup>3</sup></a></li>
+		
+			<li><a href="/categories/jdk/" title="jdk">jdk<sup>9</sup></a></li>
+		
+			<li><a href="/categories/linux/" title="linux">linux<sup>3</sup></a></li>
+		
+			<li><a href="/categories/spring/" title="spring">spring<sup>3</sup></a></li>
+		
+			<li><a href="/categories/xml/" title="xml">xml<sup>1</sup></a></li>
+		
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>3</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/IDE/" title="IDE">IDE<sup>1</sup></a></li>
+		
+			<li><a href="/tags/IDE原理/" title="IDE原理">IDE原理<sup>1</sup></a></li>
+		
+			<li><a href="/tags/XML-Schema/" title="XML Schema">XML Schema<sup>1</sup></a></li>
+		
+			<li><a href="/tags/concurrent/" title="concurrent">concurrent<sup>3</sup></a></li>
+		
+			<li><a href="/tags/http/" title="http">http<sup>1</sup></a></li>
+		
+			<li><a href="/tags/jdk/" title="jdk">jdk<sup>12</sup></a></li>
+		
+			<li><a href="/tags/linux/" title="linux">linux<sup>3</sup></a></li>
+		
+			<li><a href="/tags/mvc/" title="mvc">mvc<sup>1</sup></a></li>
+		
+			<li><a href="/tags/spring/" title="spring">spring<sup>3</sup></a></li>
+		
+			<li><a href="/tags/xml/" title="xml">xml<sup>1</sup></a></li>
+		
+			<li><a href="/tags/常用命令/" title="常用命令">常用命令<sup>3</sup></a></li>
+		
+			<li><a href="/tags/源码分析/" title="源码分析">源码分析<sup>10</sup></a></li>
+		
+			<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>3</sup></a></li>
+		
+		</ul>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2016 
+		
+		<a href="http://yoursite.com" target="_blank" title="John Doe">John Doe</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+  </body>
+</html>

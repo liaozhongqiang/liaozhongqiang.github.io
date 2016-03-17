@@ -1,0 +1,467 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>CountDownLatch、CyclicBarrier和Semaphore | Hexo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="John Doe">
+    
+    <meta name="description" content="前言jdk 1.5中的java.util.concurrent包里面有一些非常有用的并发辅助类，这篇文章主要学习一下CountDownLatch、CyclicBarrier和Semaphore">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="Hexo" title="Hexo"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Hexo">Hexo</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">嘎嘎</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/03/04/CountDownLatch、CyclicBarrier和Semaphore/" title="CountDownLatch、CyclicBarrier和Semaphore" itemprop="url">CountDownLatch、CyclicBarrier和Semaphore</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://yoursite.com" title="John Doe">John Doe</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2016-03-04T05:35:05.000Z" itemprop="datePublished">2016-03-04</time>
+    Updated:<time datetime="2016-03-04T06:38:14.793Z" itemprop="dateModified">2016-03-04</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CountDownLatch"><span class="toc-number">2.</span> <span class="toc-text">CountDownLatch</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CyclicBarrier"><span class="toc-number">3.</span> <span class="toc-text">CyclicBarrier</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Semaphore"><span class="toc-number">4.</span> <span class="toc-text">Semaphore</span></a></li></ol>
+		</div>
+		
+		<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>jdk 1.5中的java.util.concurrent包里面有一些非常有用的并发辅助类，这篇文章主要学习一下CountDownLatch、CyclicBarrier和Semaphore</p>
+<a id="more"></a>
+<h4 id="CountDownLatch"><a href="#CountDownLatch" class="headerlink" title="CountDownLatch"></a>CountDownLatch</h4><p>在javadoc里面是这么描述的 A synchronization aid that allows one or more threads to wait until a set of operations being performed in other threads completes.大概意思就是一个线程在等待一组线程完成后继续执行。</p>
+<p>例子</p>
+<pre><code>package concurrent;
+import java.util.concurrent.CountDownLatch;
+public class CountLatchDownTest {
+    public static void main(String[] args) {
+        CountDownLatch countDownLatch=new CountDownLatch(3);
+        new Thread(new Worker(countDownLatch, 1)).start();
+        new Thread(new Worker(countDownLatch, 10)).start();
+        new Thread(new Worker(countDownLatch, 5)).start();
+        try {
+            //一直等待其他线程执行完毕
+            countDownLatch.await();
+            //设置超时时间，若超过，则继续往下执行
+            countDownLatch.await(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println(&quot;所有都执行完了&quot;);
+    }
+    static class Worker implements Runnable{
+        private CountDownLatch countDownLatch;
+        private int i;
+        public Worker(CountDownLatch countDownLatch, int i) {
+            super();
+            this.countDownLatch = countDownLatch;
+            this.i = i;
+        }
+        @Override
+        public void run() {
+            System.out.println(&quot;线程&quot;+Thread.currentThread().getId()+&quot;正在执行任务，需要执行&quot;+i+&quot;秒&quot;);
+            try {
+                Thread.sleep(i*1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            countDownLatch.countDown();
+        }
+    }
+
+}
+</code></pre><h4 id="CyclicBarrier"><a href="#CyclicBarrier" class="headerlink" title="CyclicBarrier"></a>CyclicBarrier</h4><p>其在javadoc里面是这么描述的A synchronization aid that allows a set of threads to all wait for each other to reach a common barrier point.CyclicBarriers are useful in programs involving a fixed sized party of threads that must occasionally wait for each other. The barrier is called，大概意思是一组线程执行任务，必须等待所有线程执行完后，才能继续执行。在将一个大任务拆分成子任务中很有作用。</p>
+<p>例子</p>
+<pre><code>package concurrent;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+public class CyclicBarrierTest {
+    public static void main(String[] args) {
+        CyclicBarrier cyclicBarrier=new CyclicBarrier(4);
+        for(int i=0;i&lt;4;i++){
+            new Thread(new Worker(cyclicBarrier, 5)).start();
+        }
+    }
+    static class Worker implements Runnable {
+        private CyclicBarrier cyclicBarrier;
+        private int i;
+        public Worker(CyclicBarrier cyclicBarrier, int i) {
+            super();
+            this.cyclicBarrier = cyclicBarrier;
+            this.i = i;
+        }
+        @Override
+        public void run() {
+            System.out.println(&quot;线程&quot; + Thread.currentThread().getId() + &quot;正在执行任务，需要执行&quot; + i + &quot;秒&quot;);
+            try {
+                Thread.sleep(i * 1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            try {
+                //等待其他线程执行完毕
+                cyclicBarrier.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (BrokenBarrierException e) {
+                e.printStackTrace();
+            }
+
+            System.out.println(&quot;所有线程都执行完毕了&quot;);
+        }
+    }
+
+}
+</code></pre><h4 id="Semaphore"><a href="#Semaphore" class="headerlink" title="Semaphore"></a>Semaphore</h4><p>Semaphore 可以用来某个资源能够同时供多少人使用，如下面的例子，有8个工人要使用5台机器</p>
+<pre><code>package concurrent;
+import java.util.concurrent.Semaphore;
+public class SemaphoreTest {
+    public static void main(String[] args) {
+        Semaphore semaphore=new Semaphore(5);
+        for(int i=1;i&lt;10;i++){
+            new Thread(new Worker(semaphore, i)).start();
+        }
+    }
+
+    static class Worker implements Runnable{
+        private Semaphore semaphore;
+        private int i;
+        public Worker(Semaphore semaphore, int i) {
+            super();
+            this.semaphore = semaphore;
+            this.i = i;
+        }
+
+        @Override
+        public void run() {
+            try {
+                semaphore.acquire();
+                System.out.println(&quot;工人&quot;+i+&quot;使用一个机器&quot;);
+                Thread.sleep(5000);
+                System.out.println(&quot;工人&quot;+i+&quot;释放一个机器&quot;);
+                semaphore.release();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+}
+</code></pre>  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/concurrent/">concurrent</a><a href="/tags/jdk/">jdk</a><a href="/tags/源码分析/">源码分析</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/concurrent/">concurrent</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://yoursite.com/2016/03/04/CountDownLatch、CyclicBarrier和Semaphore/" data-title="CountDownLatch、CyclicBarrier和Semaphore | Hexo" data-tsina="undefined" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/03/07/spring分析-3/" title="spring分析-3">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  spring分析-3</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/03/03/spring分析-2/"  title="spring分析-2">
+ <strong>NEXT:</strong><br/> 
+ <span>spring分析-2
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+  <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CountDownLatch"><span class="toc-number">2.</span> <span class="toc-text">CountDownLatch</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CyclicBarrier"><span class="toc-number">3.</span> <span class="toc-text">CyclicBarrier</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Semaphore"><span class="toc-number">4.</span> <span class="toc-text">Semaphore</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+			<li><a href="/categories/IDE/" title="IDE">IDE<sup>1</sup></a></li>
+		
+			<li><a href="/categories/concurrent/" title="concurrent">concurrent<sup>3</sup></a></li>
+		
+			<li><a href="/categories/jdk/" title="jdk">jdk<sup>9</sup></a></li>
+		
+			<li><a href="/categories/linux/" title="linux">linux<sup>3</sup></a></li>
+		
+			<li><a href="/categories/spring/" title="spring">spring<sup>3</sup></a></li>
+		
+			<li><a href="/categories/xml/" title="xml">xml<sup>1</sup></a></li>
+		
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>3</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/IDE/" title="IDE">IDE<sup>1</sup></a></li>
+		
+			<li><a href="/tags/IDE原理/" title="IDE原理">IDE原理<sup>1</sup></a></li>
+		
+			<li><a href="/tags/XML-Schema/" title="XML Schema">XML Schema<sup>1</sup></a></li>
+		
+			<li><a href="/tags/concurrent/" title="concurrent">concurrent<sup>3</sup></a></li>
+		
+			<li><a href="/tags/http/" title="http">http<sup>1</sup></a></li>
+		
+			<li><a href="/tags/jdk/" title="jdk">jdk<sup>12</sup></a></li>
+		
+			<li><a href="/tags/linux/" title="linux">linux<sup>3</sup></a></li>
+		
+			<li><a href="/tags/mvc/" title="mvc">mvc<sup>1</sup></a></li>
+		
+			<li><a href="/tags/spring/" title="spring">spring<sup>3</sup></a></li>
+		
+			<li><a href="/tags/xml/" title="xml">xml<sup>1</sup></a></li>
+		
+			<li><a href="/tags/常用命令/" title="常用命令">常用命令<sup>3</sup></a></li>
+		
+			<li><a href="/tags/源码分析/" title="源码分析">源码分析<sup>10</sup></a></li>
+		
+			<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>3</sup></a></li>
+		
+		</ul>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2016 
+		
+		<a href="http://yoursite.com" target="_blank" title="John Doe">John Doe</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+  </body>
+</html>

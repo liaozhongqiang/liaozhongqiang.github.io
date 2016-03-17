@@ -1,0 +1,525 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>hashMap | Hexo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="John Doe">
+    
+    <meta name="description" itemprop="description" content="hashMap 源码分析">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="Hexo" title="Hexo"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Hexo">Hexo</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">嘎嘎</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/01/12/hashMap/" title="hashMap" itemprop="url">hashMap</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://yoursite.com" title="John Doe">John Doe</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2016-01-12T07:01:28.000Z" itemprop="datePublished">2016-01-12</time>
+    Updated:<time datetime="2016-02-15T07:07:54.525Z" itemprop="dateModified">2016-02-15</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#hashMap-源码分析"><span class="toc-number">1.</span> <span class="toc-text">hashMap 源码分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#hashMpa的数据结构："><span class="toc-number">1.1.</span> <span class="toc-text">hashMpa的数据结构：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#数组"><span class="toc-number">1.1.1.</span> <span class="toc-text">数组:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#链表"><span class="toc-number">1.1.2.</span> <span class="toc-text">链表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#哈希表"><span class="toc-number">1.1.3.</span> <span class="toc-text">哈希表</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hashMap的代码结构"><span class="toc-number">1.2.</span> <span class="toc-text">hashMap的代码结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hashMap的存取实现"><span class="toc-number">1.3.</span> <span class="toc-text">hashMap的存取实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#存储"><span class="toc-number">1.3.1.</span> <span class="toc-text">存储</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#取值"><span class="toc-number">1.4.</span> <span class="toc-text">取值</span></a></li></ol></li></ol>
+		</div>
+		
+		<p>hashMap 源码分析<br><a id="more"></a></p>
+<h2 id="hashMap-源码分析"><a href="#hashMap-源码分析" class="headerlink" title="hashMap 源码分析"></a>hashMap 源码分析</h2><h3 id="hashMpa的数据结构："><a href="#hashMpa的数据结构：" class="headerlink" title="hashMpa的数据结构："></a>hashMpa的数据结构：</h3><h4 id="数组"><a href="#数组" class="headerlink" title="数组:"></a>数组:</h4><p>数组存储是连续的，占用内存严重，故空间复杂度较大，但是数组的查找简单，数组的特点是查找容易，插入和删除困难。</p>
+<h4 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h4><p>链表存储是离散的，内存占用比较宽松，故空间复杂度较小，但是时间复杂度较大达到O(n),链表的特点是插入和删除容易，但是查找难。</p>
+<h4 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h4><p>哈希表是寻址容易，删除和插入也容易的数据结构。<br><!-- more --><br>hashMap就是使用哈希表进行存储的。哈希表的结构如下：<br><img src="http://i4.tietuku.com/07fa0e5a86129197.png" alt=""><br>hashMap 的默认数组大小为16，装载因子为0.75，故最多能装12个元素，然后必须扩容，扩容的大小为其原大小的两倍</p>
+<h3 id="hashMap的代码结构"><a href="#hashMap的代码结构" class="headerlink" title="hashMap的代码结构"></a>hashMap的代码结构</h3><pre><code>//数组
+transient Node&lt;K,V&gt;[] table;
+
+//链表
+static class Node&lt;K,V&gt; implements Map.Entry&lt;K,V&gt; {
+    final int hash;
+    final K key;
+    V value;
+    Node&lt;K,V&gt; next;
+}
+</code></pre><h3 id="hashMap的存取实现"><a href="#hashMap的存取实现" class="headerlink" title="hashMap的存取实现"></a>hashMap的存取实现</h3><h4 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h4><pre><code>//put方法
+public V put(K key, V value) {
+    return putVal(hash(key), key, value, false, true);
+}
+
+//获取hash值的方法
+static final int hash(Object key) {
+    int h;
+    //key为null的都是存储在0位置
+    return (key == null) ? 0 : (h = key.hashCode()) ^ (h &gt;&gt;&gt; 16);
+}
+
+//putVal方法，最终的实现put的方法
+final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
+               boolean evict) {
+    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; p; int n, i;
+    //判断存储的数组是否为空，
+    if ((tab = table) == null || (n = tab.length) == 0)
+        //对数组table进行初始化，见resize()方法
+        n = (tab = resize()).length;
+    //key的hash值，与数组长度-1进行与运算，判断这个key存放的位置
+    if ((p = tab[i = (n - 1) &amp; hash]) == null)
+        //该位置的节点没有存储过数据，新建节点并存储数据
+        tab[i] = newNode(hash, key, value, null);
+    else {
+        //P为key应该存放的链表
+        Node&lt;K,V&gt; e; K k;
+        //若链表中的第一元素与之key相等
+        if (p.hash == hash &amp;&amp;
+            ((k = p.key) == key || (key != null &amp;&amp; key.equals(k))))
+            e = p;
+        //为linkedHashMap
+        else if (p instanceof TreeNode)
+            e = ((TreeNode&lt;K,V&gt;)p).putTreeVal(this, tab, hash, key, value);
+        else {
+            //循环链表，与key进行判断
+            for (int binCount = 0; ; ++binCount) {
+                //判断链表的下一个元素是否存在
+                //不存在则将新建个NOde放在该位置
+                if ((e = p.next) == null) {
+                    p.next = newNode(hash, key, value, null);
+                    if (binCount &gt;= TREEIFY_THRESHOLD - 1) // -1 for 1st
+                        treeifyBin(tab, hash);
+                    break;
+                }
+                //存在则判断hash,key是否一样，一样则覆盖，不一样则继续循环
+                if (e.hash == hash &amp;&amp;
+                    ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))
+                    break;
+                p = e;
+            }
+        }
+        //覆盖
+        if (e != null) { // existing mapping for key
+            V oldValue = e.value;
+            if (!onlyIfAbsent || oldValue == null)
+                e.value = value;
+            afterNodeAccess(e);
+            return oldValue;
+        }
+    }
+    ++modCount;
+    //增加map大小
+    if (++size &gt; threshold)
+        resize();
+    afterNodeInsertion(evict);
+    return null;
+}
+
+//初始化数组大小或者扩容
+final Node&lt;K,V&gt;[] resize() {
+    Node&lt;K,V&gt;[] oldTab = table;
+    int oldCap = (oldTab == null) ? 0 : oldTab.length;
+    int oldThr = threshold;
+    int newCap, newThr = 0;
+    if (oldCap &gt; 0) {
+        //若数组大小超过了1073741824则将map允许的最大个数设置为int的最大值，数组不扩容
+        if (oldCap &gt;= MAXIMUM_CAPACITY) {
+            threshold = Integer.MAX_VALUE;
+            return oldTab;
+        }
+        //旧数组大小的两倍不超过1073741824，旧数组的大小大于默认值
+        else if ((newCap = oldCap &lt;&lt; 1) &lt; MAXIMUM_CAPACITY &amp;&amp;
+                 oldCap &gt;= DEFAULT_INITIAL_CAPACITY)
+            //map允许的元素翻倍
+            newThr = oldThr &lt;&lt; 1; // double threshold
+    }
+    else if (oldThr &gt; 0) // initial capacity was placed in threshold
+        newCap = oldThr;
+    else {
+        //初始化 数组大小默认是16，map大小默认是0.75*16
+        newCap = DEFAULT_INITIAL_CAPACITY;
+        newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
+    }
+    if (newThr == 0) {
+        float ft = (float)newCap * loadFactor;
+        newThr = (newCap &lt; MAXIMUM_CAPACITY &amp;&amp; ft &lt; (float)MAXIMUM_CAPACITY ?
+                  (int)ft : Integer.MAX_VALUE);
+    }
+    threshold = newThr;
+    //新数组
+    @SuppressWarnings({&quot;rawtypes&quot;,&quot;unchecked&quot;})
+        Node&lt;K,V&gt;[] newTab = (Node&lt;K,V&gt;[])new Node[newCap];
+    table = newTab;
+    //旧数组的复制到新数组
+    if (oldTab != null) {
+        for (int j = 0; j &lt; oldCap; ++j) {
+            Node&lt;K,V&gt; e;
+            if ((e = oldTab[j]) != null) {
+                oldTab[j] = null;
+                if (e.next == null)
+                    newTab[e.hash &amp; (newCap - 1)] = e;
+                else if (e instanceof TreeNode)
+                    ((TreeNode&lt;K,V&gt;)e).split(this, newTab, j, oldCap);
+                else { // preserve order
+                    Node&lt;K,V&gt; loHead = null, loTail = null;
+                    Node&lt;K,V&gt; hiHead = null, hiTail = null;
+                    Node&lt;K,V&gt; next;
+                    do {
+                        next = e.next;
+                        if ((e.hash &amp; oldCap) == 0) {
+                            if (loTail == null)
+                                loHead = e;
+                            else
+                                loTail.next = e;
+                            loTail = e;
+                        }
+                        else {
+                            if (hiTail == null)
+                                hiHead = e;
+                            else
+                                hiTail.next = e;
+                            hiTail = e;
+                        }
+                    } while ((e = next) != null);
+                    if (loTail != null) {
+                        loTail.next = null;
+                        newTab[j] = loHead;
+                    }
+                    if (hiTail != null) {
+                        hiTail.next = null;
+                        newTab[j + oldCap] = hiHead;
+                    }
+                }
+            }
+        }
+    }
+    return newTab;
+}
+</code></pre><h3 id="取值"><a href="#取值" class="headerlink" title="取值"></a>取值</h3><pre><code>final Node&lt;K,V&gt; getNode(int hash, Object key) {
+    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; first, e; int n; K k;
+    //定位hash值存在的数组的位置
+    if ((tab = table) != null &amp;&amp; (n = tab.length) &gt; 0 &amp;&amp;
+        (first = tab[(n - 1) &amp; hash]) != null) {
+        //是否是第一个链表
+        if (first.hash == hash &amp;&amp; // always check first node
+            ((k = first.key) == key || (key != null &amp;&amp; key.equals(k))))
+            return first;
+        //继续往下循环
+        if ((e = first.next) != null) {
+            //是否是linkedHashMap
+            if (first instanceof TreeNode)
+                return ((TreeNode&lt;K,V&gt;)first).getTreeNode(hash, key);
+            //循环判断
+            do {
+                if (e.hash == hash &amp;&amp;
+                    ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))
+                    return e;
+            } while ((e = e.next) != null);
+        }
+    }
+    return null;
+}
+</code></pre>  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/jdk/">jdk</a><a href="/tags/源码分析/">源码分析</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/jdk/">jdk</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://yoursite.com/2016/01/12/hashMap/" data-title="hashMap | Hexo" data-tsina="undefined" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/01/13/hashTable/" title="hashTable">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  hashTable</span>
+</a>
+</div>
+
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#hashMap-源码分析"><span class="toc-number">1.</span> <span class="toc-text">hashMap 源码分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#hashMpa的数据结构："><span class="toc-number">1.1.</span> <span class="toc-text">hashMpa的数据结构：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#数组"><span class="toc-number">1.1.1.</span> <span class="toc-text">数组:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#链表"><span class="toc-number">1.1.2.</span> <span class="toc-text">链表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#哈希表"><span class="toc-number">1.1.3.</span> <span class="toc-text">哈希表</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hashMap的代码结构"><span class="toc-number">1.2.</span> <span class="toc-text">hashMap的代码结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hashMap的存取实现"><span class="toc-number">1.3.</span> <span class="toc-text">hashMap的存取实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#存储"><span class="toc-number">1.3.1.</span> <span class="toc-text">存储</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#取值"><span class="toc-number">1.4.</span> <span class="toc-text">取值</span></a></li></ol></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+			<li><a href="/categories/IDE/" title="IDE">IDE<sup>1</sup></a></li>
+		
+			<li><a href="/categories/concurrent/" title="concurrent">concurrent<sup>3</sup></a></li>
+		
+			<li><a href="/categories/jdk/" title="jdk">jdk<sup>9</sup></a></li>
+		
+			<li><a href="/categories/linux/" title="linux">linux<sup>3</sup></a></li>
+		
+			<li><a href="/categories/spring/" title="spring">spring<sup>3</sup></a></li>
+		
+			<li><a href="/categories/xml/" title="xml">xml<sup>1</sup></a></li>
+		
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>3</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/IDE/" title="IDE">IDE<sup>1</sup></a></li>
+		
+			<li><a href="/tags/IDE原理/" title="IDE原理">IDE原理<sup>1</sup></a></li>
+		
+			<li><a href="/tags/XML-Schema/" title="XML Schema">XML Schema<sup>1</sup></a></li>
+		
+			<li><a href="/tags/concurrent/" title="concurrent">concurrent<sup>3</sup></a></li>
+		
+			<li><a href="/tags/http/" title="http">http<sup>1</sup></a></li>
+		
+			<li><a href="/tags/jdk/" title="jdk">jdk<sup>12</sup></a></li>
+		
+			<li><a href="/tags/linux/" title="linux">linux<sup>3</sup></a></li>
+		
+			<li><a href="/tags/mvc/" title="mvc">mvc<sup>1</sup></a></li>
+		
+			<li><a href="/tags/spring/" title="spring">spring<sup>3</sup></a></li>
+		
+			<li><a href="/tags/xml/" title="xml">xml<sup>1</sup></a></li>
+		
+			<li><a href="/tags/常用命令/" title="常用命令">常用命令<sup>3</sup></a></li>
+		
+			<li><a href="/tags/源码分析/" title="源码分析">源码分析<sup>10</sup></a></li>
+		
+			<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>3</sup></a></li>
+		
+		</ul>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2016 
+		
+		<a href="http://yoursite.com" target="_blank" title="John Doe">John Doe</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+  </body>
+</html>
