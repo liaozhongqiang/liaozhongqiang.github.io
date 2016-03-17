@@ -4,207 +4,76 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>spring分析-2 | Hexo</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    <title>spring分析-2 | 我的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
-    <meta name="author" content="John Doe">
+    <meta name="author" content="廖忠强">
+    
+
     
     <meta name="description" content="Bean的实例化过程AbstractBeanFactory的doGetBean方法
 @SuppressWarnings(&amp;quot;unchecked&amp;quot;)
 protected &amp;lt;T&amp;gt; T doGetBean(
-        final String name, final Class&amp;lt;T&amp;gt; requiredType, final Object[] args, boolean typeCheckOnly)
-        throws BeansException {
+        final String name, final Class&amp;lt;T&amp;gt; requiredType, final Object[] args, b">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring分析-2">
+<meta property="og:url" content="http://yoursite.com/2016/03/03/spring分析-2/index.html">
+<meta property="og:site_name" content="我的博客">
+<meta property="og:description" content="Bean的实例化过程AbstractBeanFactory的doGetBean方法
+@SuppressWarnings(&amp;quot;unchecked&amp;quot;)
+protected &amp;lt;T&amp;gt; T doGetBean(
+        final String name, final Class&amp;lt;T&amp;gt; requiredType, final Object[] args, b">
+<meta property="og:updated_time" content="2016-03-07T06:13:51.400Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="spring分析-2">
+<meta name="twitter:description" content="Bean的实例化过程AbstractBeanFactory的doGetBean方法
+@SuppressWarnings(&amp;quot;unchecked&amp;quot;)
+protected &amp;lt;T&amp;gt; T doGetBean(
+        final String name, final Class&amp;lt;T&amp;gt; requiredType, final Object[] args, b">
 
-    //beanFactory名字转换 &amp;amp;
-    final String beanName = transformedBeanName(name);
-    Object bean;
-
-    // 从缓存中获取
-    Object sharedInstance = getSingleton(beanName);
-    if (sharedInstance != null &amp;amp;&amp;amp; args == null) {
-        if (logger.isDebugEnabled()) {
-            if (isSingletonCurrentlyInCreation(beanName)) {
-                logger.debug(&amp;quot;Returning eagerly cached instance of singleton bean &amp;apos;&amp;quot; + beanName +
-                        &amp;quot;&amp;apos; that is not fully initialized yet - a consequence of a circular reference&amp;quot;);
-            }
-            else {
-                logger.debug(&amp;quot;Returning cached instance of singleton bean &amp;apos;&amp;quot; + beanName + &amp;quot;&amp;apos;&amp;quot;);
-            }
-        }
-        bean = getObjectForBeanInstance(sharedInstance, name, beanName, null);
-    }
-
-    else {
-        // Fail if we&amp;apos;re already creating this bean instance:
-        // We&amp;apos;re assumably within a circular reference.
-        if (isPrototypeCurrentlyInCreation(beanName)) {
-            throw new BeanCurrentlyInCreationException(beanName);
-        }
-
-        // Check if bean definition exists in this factory.
-        //查看该beanName是否存在，若不存在则去其父BeanFactory查找，如spring mvc的bean进行初始化时，mvc的beanFactory中的action需要注入service，而service一般放在spring的beanFactory管，故将spring的beanFactory 设置为mvc的父，则能在action中依赖注入service
-        BeanFactory parentBeanFactory = getParentBeanFactory();
-        if (parentBeanFactory != null &amp;amp;&amp;amp; !containsBeanDefinition(beanName)) {
-            // Not found -&amp;gt; check parent.
-            String nameToLookup = originalBeanName(name);
-            if (args != null) {
-                // Delegation to parent with explicit args.
-                return (T) parentBeanFactory.getBean(nameToLookup, args);
-            }
-            else {
-                // No args -&amp;gt; delegate to standard getBean method.
-                return parentBeanFactory.getBean(nameToLookup, requiredType);
-            }
-        }
-
-        if (!typeCheckOnly) {
-            markBeanAsCreated(beanName);
-        }
-
-        try {
-            final RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
-            checkMergedBeanDefinition(mbd, beanName, args);
-
-            // Guarantee initialization of beans that the current bean depends on.
-            String[] dependsOn = mbd.getDependsOn();
-            if (dependsOn != null) {
-                for (String dependsOnBean : dependsOn) {
-                    if (isDependent(beanName, dependsOnBean)) {
-                        throw new BeanCreationException(mbd.getResourceDescription(), beanName,
-                                &amp;quot;Circular depends-on relationship between &amp;apos;&amp;quot; + beanName + &amp;quot;&amp;apos; and &amp;apos;&amp;quot; + dependsOnBean + &amp;quot;&amp;apos;&amp;quot;);
-                    }
-                    registerDependentBean(dependsOnBean, beanName);
-                    getBean(dependsOnBean);
-                }
-            }
-
-            // Create bean instance.
-            if (mbd.isSingleton()) {
-                sharedInstance = getSingleton(beanName, new ObjectFactory&amp;lt;Object&amp;gt;() {
-                    @Override
-                    public Object getObject() throws BeansException {
-                        try {
-                            return createBean(beanName, mbd, args);
-                        }
-                        catch (BeansException ex) {
-                            // Explicitly remove instance from singleton cache: It might have been put there
-                            // eagerly by the creation process, to allow for circular reference resolution.
-                            // Also remove any beans that received a temporary reference to the bean.
-                            destroySingleton(beanName);
-                            throw ex;
-                        }
-                    }
-                });
-                bean = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
-            }
-
-            else if (mbd.isPrototype()) {
-                // It&amp;apos;s a prototype -&amp;gt; create a new instance.
-                Object prototypeInstance = null;
-                try {
-                    beforePrototypeCreation(beanName);
-                    prototypeInstance = createBean(beanName, mbd, args);
-                }
-                finally {
-                    afterPrototypeCreation(beanName);
-                }
-                bean = getObjectForBeanInstance(prototypeInstance, name, beanName, mbd);
-            }
-
-            else {
-                String scopeName = mbd.getScope();
-                final Scope scope = this.scopes.get(scopeName);
-                if (scope == null) {
-                    throw new IllegalStateException(&amp;quot;No Scope registered for scope &amp;apos;&amp;quot; + scopeName + &amp;quot;&amp;apos;&amp;quot;);
-                }
-                try {
-                    Object scopedInstance = scope.get(beanName, new ObjectFactory&amp;lt;Object&amp;gt;() {
-                        @Override
-                        public Object getObject() throws BeansException {
-                            beforePrototypeCreation(beanName);
-                            try {
-                                return createBean(beanName, mbd, args);
-                            }
-                            finally {
-                                afterPrototypeCreation(beanName);
-                            }
-                        }
-                    });
-                    bean = getObjectForBeanInstance(scopedInstance, name, beanName, mbd);
-                }
-                catch (IllegalStateException ex) {
-                    throw new BeanCreationException(beanName,
-                            &amp;quot;Scope &amp;apos;&amp;quot; + scopeName + &amp;quot;&amp;apos; is not active for the current thread; &amp;quot; +
-                            &amp;quot;consider defining a scoped proxy for this bean if you intend to refer to it from a singleton&amp;quot;,
-                            ex);
-                }
-            }
-        }
-        catch (BeansException ex) {
-            cleanupAfterBeanCreationFailure(beanName);
-            throw ex;
-        }
-    }
-1、AbstractAutowireCapableBeanFactory的createBean() 方法
-@Override
-protected Object createBean(String beanName, RootBeanDefinition mbd, Object[] args) throws BeanCreationException {
-    RootBeanDefinition mbdToUse = mbd;
-    //解析出class
-    Class&amp;lt;?&amp;gt; resolvedClass = resolveBeanClass(mbd, beanName);
-    if (resolvedClass != null &amp;amp;&amp;amp; !mbd.hasBeanClass() &amp;amp;&amp;amp; mbd.getBeanClassName() != null) {
-        mbdToUse = new RootBeanDefinition(mbd);
-        mbdToUse.setBeanClass(resolvedClass);
-    }
-    //对注入方法做验证 抛出BeanDefinitionValidationException异常
-    mbdToUse.prepareMethodOverrides();
-    //1、第一个拓展点 执行InstantiationAwareBeanPostProcessors 的方法
-    Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
-    if (bean != null) {
-        return bean;
-    }
-    Object beanInstance = doCreateBean(beanName, mbdToUse, args);
-    return beanInstance;
-}">
     
-    
-    
+    <link rel="alternative" href="/atom.xml" title="我的博客" type="application/atom+xml">
     
     
     <link rel="icon" href="/img/favicon.ico">
     
     
-    <link rel="apple-touch-icon" href="/img/pacman.jpg">
-    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
     
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
   <body>
     <header>
-      <div>
+      
+<div>
 		
 			<div id="imglogo">
-				<a href="/"><img src="/img/logo.svg" alt="Hexo" title="Hexo"/></a>
+				<a href="/"><img src="/img/logo.png" alt="我的博客" title="我的博客"/></a>
 			</div>
 			
 			<div id="textlogo">
-				<h1 class="site-name"><a href="/" title="Hexo">Hexo</a></h1>
+				<h1 class="site-name"><a href="/" title="我的博客">我的博客</a></h1>
 				<h2 class="blog-motto"></h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
 					
-						<li><a href="/">首页</a></li>
+						<li><a href="/archives">Archives</a></li>
 					
-						<li><a href="/archives">嘎嘎</a></li>
+						<li><a href="/about">About</a></li>
 					
 					<li>
-					
+ 					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:yoursite.com">
 					</form>
 					
@@ -212,10 +81,10 @@ protected Object createBean(String beanName, RootBeanDefinition mbd, Object[] ar
 				</ul>
 			</nav>			
 </div>
-
     </header>
     <div id="container">
       <div id="main" class="post" itemscope itemprop="blogPost">
+  
 	<article itemprop="articleBody"> 
 		<header class="article-info clearfix">
   <h1 itemprop="name">
@@ -223,21 +92,21 @@ protected Object createBean(String beanName, RootBeanDefinition mbd, Object[] ar
       <a href="/2016/03/03/spring分析-2/" title="spring分析-2" itemprop="url">spring分析-2</a>
   </h1>
   <p class="article-author">By
-    
-      <a href="http://yoursite.com" title="John Doe">John Doe</a>
-    </p>
+       
+		<a href="/about" title="廖忠强" target="_blank" itemprop="author">廖忠强</a>
+		
   <p class="article-time">
-    <time datetime="2016-03-03T09:35:07.000Z" itemprop="datePublished">2016-03-03</time>
-    Updated:<time datetime="2016-03-07T06:13:51.400Z" itemprop="dateModified">2016-03-07</time>
+    <time datetime="2016-03-03T09:35:07.000Z" itemprop="datePublished"> 发表于 2016-03-03</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
-		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">Contents</strong>
-		<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#Bean的实例化过程"><span class="toc-number">1.</span> <span class="toc-text">Bean的实例化过程</span></a></li></ol>
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#Bean的实例化过程"><span class="toc-number">1.</span> <span class="toc-text">Bean的实例化过程</span></a></li></ol>
+		
 		</div>
 		
 		<h4 id="Bean的实例化过程"><a href="#Bean的实例化过程" class="headerlink" title="Bean的实例化过程"></a>Bean的实例化过程</h4><p>AbstractBeanFactory的doGetBean方法</p>
@@ -659,12 +528,7 @@ protected Object createBean(String beanName, RootBeanDefinition mbd, Object[] ar
   
 	</div>
 		<footer class="article-footer clearfix">
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/spring/">spring</a>
-  </div>
-
+<div class="article-catetags">
 
 <div class="article-categories">
   <span></span>
@@ -672,21 +536,33 @@ protected Object createBean(String beanName, RootBeanDefinition mbd, Object[] ar
 </div>
 
 
-
-<div class="article-share" id="share">
-
-  <div data-url="http://yoursite.com/2016/03/03/spring分析-2/" data-title="spring分析-2 | Hexo" data-tsina="undefined" class="share clearfix">
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/spring/">spring</a>
   </div>
 
 </div>
-</footer>   	       
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2016/03/03/spring分析-2/" data-title="spring分析-2 | 我的博客" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
 	</article>
 	
 <nav class="article-nav clearfix">
  
  <div class="prev" >
  <a href="/2016/03/04/CountDownLatch、CyclicBarrier和Semaphore/" title="CountDownLatch、CyclicBarrier和Semaphore">
-  <strong>PREVIOUS:</strong><br/>
+  <strong>上一篇：</strong><br/>
   <span>
   CountDownLatch、CyclicBarrier和Semaphore</span>
 </a>
@@ -695,7 +571,7 @@ protected Object createBean(String beanName, RootBeanDefinition mbd, Object[] ar
 
 <div class="next">
 <a href="/2016/02/19/XSD/"  title="xsd">
- <strong>NEXT:</strong><br/> 
+ <strong>下一篇：</strong><br/> 
  <span>xsd
 </span>
 </a>
@@ -704,36 +580,56 @@ protected Object createBean(String beanName, RootBeanDefinition mbd, Object[] ar
 </nav>
 
 	
+
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">Contents</strong>
-  <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#Bean的实例化过程"><span class="toc-number">1.</span> <span class="toc-text">Bean的实例化过程</span></a></li></ol>
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#Bean的实例化过程"><span class="toc-number">1.</span> <span class="toc-text">Bean的实例化过程</span></a></li></ol>
+ 
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 
   
+
+
+  
 <div class="categorieslist">
-	<p class="asidetitle">Categories</p>
+	<p class="asidetitle">分类</p>
 		<ul>
 		
+		  
 			<li><a href="/categories/IDE/" title="IDE">IDE<sup>1</sup></a></li>
+		  
 		
+		  
 			<li><a href="/categories/concurrent/" title="concurrent">concurrent<sup>3</sup></a></li>
+		  
 		
+		  
 			<li><a href="/categories/jdk/" title="jdk">jdk<sup>9</sup></a></li>
+		  
 		
+		  
 			<li><a href="/categories/linux/" title="linux">linux<sup>3</sup></a></li>
+		  
 		
+		  
 			<li><a href="/categories/spring/" title="spring">spring<sup>3</sup></a></li>
+		  
 		
+		  
 			<li><a href="/categories/xml/" title="xml">xml<sup>1</sup></a></li>
+		  
 		
+		  
 			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>3</sup></a></li>
+		  
 		
 		</ul>
 </div>
@@ -741,36 +637,94 @@ protected Object createBean(String beanName, RootBeanDefinition mbd, Object[] ar
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
-			<li><a href="/tags/IDE/" title="IDE">IDE<sup>1</sup></a></li>
+			
+				<li><a href="/tags/jdk/" title="jdk">jdk<sup>12</sup></a></li>
+			
 		
-			<li><a href="/tags/IDE原理/" title="IDE原理">IDE原理<sup>1</sup></a></li>
+			
+				<li><a href="/tags/源码分析/" title="源码分析">源码分析<sup>10</sup></a></li>
+			
 		
-			<li><a href="/tags/XML-Schema/" title="XML Schema">XML Schema<sup>1</sup></a></li>
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>3</sup></a></li>
+			
 		
-			<li><a href="/tags/concurrent/" title="concurrent">concurrent<sup>3</sup></a></li>
+			
+				<li><a href="/tags/spring/" title="spring">spring<sup>3</sup></a></li>
+			
 		
-			<li><a href="/tags/http/" title="http">http<sup>1</sup></a></li>
+			
+				<li><a href="/tags/常用命令/" title="常用命令">常用命令<sup>3</sup></a></li>
+			
 		
-			<li><a href="/tags/jdk/" title="jdk">jdk<sup>12</sup></a></li>
+			
+				<li><a href="/tags/concurrent/" title="concurrent">concurrent<sup>3</sup></a></li>
+			
 		
-			<li><a href="/tags/linux/" title="linux">linux<sup>3</sup></a></li>
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>3</sup></a></li>
+			
 		
-			<li><a href="/tags/mvc/" title="mvc">mvc<sup>1</sup></a></li>
+			
+				<li><a href="/tags/XML-Schema/" title="XML Schema">XML Schema<sup>1</sup></a></li>
+			
 		
-			<li><a href="/tags/spring/" title="spring">spring<sup>3</sup></a></li>
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>1</sup></a></li>
+			
 		
-			<li><a href="/tags/xml/" title="xml">xml<sup>1</sup></a></li>
+			
+				<li><a href="/tags/IDE/" title="IDE">IDE<sup>1</sup></a></li>
+			
 		
-			<li><a href="/tags/常用命令/" title="常用命令">常用命令<sup>3</sup></a></li>
+			
+				<li><a href="/tags/IDE原理/" title="IDE原理">IDE原理<sup>1</sup></a></li>
+			
 		
-			<li><a href="/tags/源码分析/" title="源码分析">源码分析<sup>10</sup></a></li>
+			
+				<li><a href="/tags/http/" title="http">http<sup>1</sup></a></li>
+			
 		
-			<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>3</sup></a></li>
+			
+				<li><a href="/tags/mvc/" title="mvc">mvc<sup>1</sup></a></li>
+			
 		
 		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=b3593ceb&dpc=1"></iframe>
 </div>
 
 
@@ -785,21 +739,42 @@ protected Object createBean(String beanName, RootBeanDefinition mbd, Object[] ar
 	</div>
 	
 	
-	<div class="social-font clearfix">
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
 		
 		
 		
 		
 		
 	</div>
-		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2016 
+			
 		
-		<a href="http://yoursite.com" target="_blank" title="John Doe">John Doe</a>
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="廖忠强">廖忠强</a>
+		
 		
 		</p>
 </div>
 </footer>
-    <script src="/js/jquery-2.1.0.min.js"></script>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function(){ 
   $('.navbar').click(function(){
@@ -817,20 +792,6 @@ $(document).ready(function(){
       a = $('#asidepart'),
       c = $('.closeaside'),
       o = $('.openaside');
-  $(window).resize(function(){
-    getSize(); 
-    if (myWidth >= 1024) {
-      $('header nav').removeClass('shownav');
-    }else
-    {
-      m.removeClass('moveMain');
-      a.css('display', 'block').removeClass('fadeOut');
-      o.css('display', 'none');
-      
-      $('#toc.toc-aside').css('display', 'none');
-        
-    }
-  });
   c.click(function(){
     a.addClass('fadeOut').css('display', 'none');
     o.css('display', 'block').addClass('fadeIn');
@@ -844,6 +805,20 @@ $(document).ready(function(){
   $(window).scroll(function(){
     o.css("top",Math.max(80,260-$(this).scrollTop()));
   });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
 });
 </script>
 
@@ -852,8 +827,6 @@ $(document).ready(function(){
   var ai = $('.article-content>iframe'),
       ae = $('.article-content>embed'),
       t  = $('#toc'),
-      h  = $('article h2')
-      ah = $('article h2'),
       ta = $('#toc.toc-aside'),
       o  = $('.openaside'),
       c  = $('.closeaside');
@@ -863,19 +836,15 @@ $(document).ready(function(){
   if(ae.length>0){
    ae.wrap('<div class="video-container" />');
   };
-  if(ah.length==0){
-    t.css('display','none');
-  }else{
-    c.click(function(){
-      ta.css('display', 'block').addClass('fadeIn');
-    });
-    o.click(function(){
-      ta.css('display', 'none');
-    });
-    $(window).scroll(function(){
-      ta.css("top",Math.max(140,320-$(this).scrollTop()));
-    });
-  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
 });
 </script>
 
@@ -886,32 +855,116 @@ $(document).ready(function(){
       url = $this.attr('data-url'),
       encodedUrl = encodeURIComponent(url),
       title = $this.attr('data-title'),
-      tsina = $this.attr('data-tsina');
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
   var html = [
-  '<a href="#" class="overlay" id="qrcode"></a>',
-  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
-  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
   '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
-  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
   '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
-  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
   '<span title="Share to"></span>'
   ].join('');
   $this.append(html);
-  $('.article-share-qrcode').click(function(){
-    var imgSrc = $('#qrcode-pic').attr('data-src');
-    $('#qrcode-pic').attr('src', imgSrc);
-    $('#qrcode-pic').load(function(){
-        $('.qrcode strong').text(' ');
-    });
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
   });
-});     
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
 </script>
 
 
 
 
 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
 
   </body>
 </html>

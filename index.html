@@ -4,50 +4,66 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Hexo</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    <title>我的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
-    <meta name="author" content="John Doe">
+    <meta name="author" content="廖忠强">
     
+
     
+    <meta name="description" content="我的博客">
+<meta property="og:type" content="website">
+<meta property="og:title" content="我的博客">
+<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:site_name" content="我的博客">
+<meta property="og:description" content="我的博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="我的博客">
+<meta name="twitter:description" content="我的博客">
+
     
+    <link rel="alternative" href="/atom.xml" title="我的博客" type="application/atom+xml">
     
     
     <link rel="icon" href="/img/favicon.ico">
     
     
-    <link rel="apple-touch-icon" href="/img/pacman.jpg">
-    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
     
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
   <body>
     <header>
-      <div>
+      
+<div>
 		
 			<div id="imglogo">
-				<a href="/"><img src="/img/logo.svg" alt="Hexo" title="Hexo"/></a>
+				<a href="/"><img src="/img/logo.png" alt="我的博客" title="我的博客"/></a>
 			</div>
 			
 			<div id="textlogo">
-				<h1 class="site-name"><a href="/" title="Hexo">Hexo</a></h1>
+				<h1 class="site-name"><a href="/" title="我的博客">我的博客</a></h1>
 				<h2 class="blog-motto"></h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
 					
-						<li><a href="/">首页</a></li>
+						<li><a href="/archives">Archives</a></li>
 					
-						<li><a href="/archives">嘎嘎</a></li>
+						<li><a href="/about">About</a></li>
 					
 					<li>
-					
+ 					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:yoursite.com">
 					</form>
 					
@@ -55,191 +71,866 @@
 				</ul>
 			</nav>			
 </div>
-
     </header>
     <div id="container">
       <div id="main">
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2016/03/08/java常量池/" title="java常量池" itemprop="url">
-  
-    <h1 itemprop="name">java常量池</h1>
+   
     
-     
-           <p itemprop="description" ></p>
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/03/08/java常量池/" title="java常量池" itemprop="url">java常量池</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="廖忠强" target="_blank" itemprop="author">廖忠强</a>
+		
+  <p class="article-time">
+    <time datetime="2016-03-08T05:35:46.000Z" itemprop="datePublished"> 发表于 2016-03-08</time>
+    
+  </p>
+</header>
+    <div class="article-content">
         
-    
-    <time datetime="2016-03-08T05:35:46.000Z" itemprop="datePublished">2016-03-08</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2016/03/07/jdk1-8编译class文件1-7格式或以下格式注意事项/" title="jdk1.8编译class文件1.7格式或以下格式注意事项" itemprop="url">
-  
-    <h1 itemprop="name">jdk1.8编译class文件1.7格式或以下格式注意事项</h1>
-    
-     
-           <p itemprop="description" >编译注意事项开发环境是1.8时，而生产环境是1.7或以下版本时，需注意编译出的class文件必须是跟生产环境上jdk版本一致。
-特别注意当你使用1.8编译java成class文件的1.7版本时，需注意，1.8中一些方法的内部实现的修改。比如常见的错误 ConcurrentHash</p>
         
-    
-    <time datetime="2016-03-07T08:28:44.000Z" itemprop="datePublished">2016-03-07</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2016/03/07/spring分析-3/" title="spring分析-3" itemprop="url">
-  
-    <h1 itemprop="name">spring分析-3</h1>
-    
-     
-       <p itemprop="description" >MVC作为一个MVC框架，必须回答一下几个问题  
-
-请求映射到控制器
-请求数据进行绑定
-视图渲染
-
-而spring mvc是如何解决这几个问题的呢？</p>
-      
-    
-    <time datetime="2016-03-07T07:17:47.000Z" itemprop="datePublished">2016-03-07</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2016/03/04/CountDownLatch、CyclicBarrier和Semaphore/" title="CountDownLatch、CyclicBarrier和Semaphore" itemprop="url">
-  
-    <h1 itemprop="name">CountDownLatch、CyclicBarrier和Semaphore</h1>
-    
-     
-       <p itemprop="description" >前言jdk 1.5中的java.util.concurrent包里面有一些非常有用的并发辅助类，这篇文章主要学习一下CountDownLatch、CyclicBarrier和Semaphore</p>
-      
-    
-    <time datetime="2016-03-04T05:35:05.000Z" itemprop="datePublished">2016-03-04</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2016/03/03/spring分析-2/" title="spring分析-2" itemprop="url">
-  
-    <h1 itemprop="name">spring分析-2</h1>
-    
-     
-       <p itemprop="description" >Bean的实例化过程AbstractBeanFactory的doGetBean方法
-@SuppressWarnings(&amp;quot;unchecked&amp;quot;)
-protected &amp;lt;T&amp;gt; T doGetBean(
-        final String nam</p>
-      
-    
-    <time datetime="2016-03-03T09:35:07.000Z" itemprop="datePublished">2016-03-03</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2016/02/19/XSD/" title="xsd" itemprop="url">
-  
-    <h1 itemprop="name">xsd</h1>
-    
-     
-       <p itemprop="description" >介绍XML Schema Definition 缩写.可扩展标记语言架构是以可扩展标记语言（标准通用标记语言的子集）为基础的，它用于可替代文档类型定义（外语缩写：DTD）；一份XML schema文件描述了可扩展标记语言文档的结构。</p>
-      
-    
-    <time datetime="2016-02-19T03:26:07.000Z" itemprop="datePublished">2016-02-19</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2016/02/15/spring分析-1/" title="spring分析-1" itemprop="url">
-  
-    <h1 itemprop="name">spring分析-1</h1>
-    
-     
-       <p itemprop="description" >前言spring的结构如下图由上图可以看出spring的核心部分是context、bean、core。而我们使用spring的原因是其IOC，IOC的核心就是bean，core包则可以理解为一个util包。所以我们来看看IOC是怎么实现的。</p>
-      
-    
-    <time datetime="2016-02-15T06:47:10.000Z" itemprop="datePublished">2016-02-15</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2016/02/15/copyOnWriteArrayList详解/" title="copyOnWriteArrayList详解.md" itemprop="url">
-  
-    <h1 itemprop="name">copyOnWriteArrayList详解.md</h1>
-    
-     
-           <p itemprop="description" >前言ArrayList 的一个线程安全的变体，其中所有可变操作（add、set 等等）都是通过对底层数组进行一次新的复制来实现的。 这一般需要很大的开销，但是当遍历操作的数量大大超过可变操作的数量时，这种方法可能比其他替代方法更 有效。在不能或不想进行同步遍历，但又需要从并发线程</p>
         
-    
-    <time datetime="2016-02-15T02:54:47.000Z" itemprop="datePublished">2016-02-15</time>
-  </a>
-</section>
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2016/01/29/eclipse等IDE是如何debug java程序/" title="eclipse等IDE是如何debug java程序?" itemprop="url">
-  
-    <h1 itemprop="name">eclipse等IDE是如何debug java程序?</h1>
-    
-     
-       <p itemprop="description" >IDE是如何debug java程序前言最近在看看jdk源码，有的地方不是看的很明白，想debug jdk，但是发现debug进去看不到variables。想知道IDE是如何进行debug?查看javac命令发现其有个参数-g的选项 是生成所有的调试信息。那看来编译的时候必须加上</p>
-      
-    
-    <time datetime="2016-01-29T01:46:07.000Z" itemprop="datePublished">2016-01-29</time>
-  </a>
-</section>
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/jdk/">jdk</a>
+</div>
 
-  <section class="post" itemscope itemprop="blogPost">
+
+  <div class="article-tags">
   
-    <a href="/2016/01/28/concurrentHashMap-详解/" title="ConcurrentHashMap 详解" itemprop="url">
+  <span></span> <a href="/tags/jdk/">jdk</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/03/07/jdk1-8编译class文件1-7格式或以下格式注意事项/" title="jdk1.8编译class文件1.7格式或以下格式注意事项" itemprop="url">jdk1.8编译class文件1.7格式或以下格式注意事项</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="廖忠强" target="_blank" itemprop="author">廖忠强</a>
+		
+  <p class="article-time">
+    <time datetime="2016-03-07T08:28:44.000Z" itemprop="datePublished"> 发表于 2016-03-07</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h4 id="编译注意事项"><a href="#编译注意事项" class="headerlink" title="编译注意事项"></a>编译注意事项</h4><p>开发环境是1.8时，而生产环境是1.7或以下版本时，需注意编译出的class文件必须是跟生产环境上jdk版本一致。</p>
+<h4 id="特别注意"><a href="#特别注意" class="headerlink" title="特别注意"></a>特别注意</h4><p>当你使用1.8编译java成class文件的1.7版本时，需注意，1.8中一些方法的内部实现的修改。比如常见的错误 ConcurrentHashMap 的keySet()方法 其返回参数改为KeySetView<k,v> 而你用1.8编译出的class文件会在1.7环境中报找不到KeySetView这个类。如下错误</k,v></p>
+<pre><code>java.lang.NoSuchMethodError: java.util.concurrent.ConcurrentHashMap.keySet()Ljava/util/concurrent/ConcurrentHashMap$KeySetView;
+    at org.apache.catalina.core.ApplicationContext.getInitParameterNames(ApplicationContext.java:319)
+    at org.apache.catalina.core.ApplicationContextFacade.getInitParameterNames(ApplicationContextFacade.java:368)
+    at org.springframework.web.context.support.WebApplicationContextUtils.registerEnvironmentBeans(WebApplicationContextUtils.java:201)
+    at org.springframework.web.context.support.AbstractRefreshableWebApplicationContext.postProcessBeanFactory(AbstractRefreshableWebApplicationContext.java:175)
+    at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:461)
+    at org.springframework.web.context.ContextLoader.configureAndRefreshWebApplicationContext(ContextLoader.java:389)
+    at org.springframework.web.context.ContextLoader.initWebApplicationContext(ContextLoader.java:294)
+    at org.springframework.web.context.ContextLoaderListener.contextInitialized(ContextLoaderListener.java:106)
+    at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:4830)
+    at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5276)
+    at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:150)
+    at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:726)
+    at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:702)
+    at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:698)
+    at org.apache.catalina.startup.HostConfig.deployWAR(HostConfig.java:968)
+    at org.apache.catalina.startup.HostConfig$DeployWar.run(HostConfig.java:1742)
+    at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:471)
+    at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:334)
+    at java.util.concurrent.FutureTask.run(FutureTask.java:166)
+    at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
+    at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
+    at java.lang.Thread.run(Thread.java:722)
+</code></pre>
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/jdk/">jdk</a>
+</div>
+
+
+  <div class="article-tags">
   
-    <h1 itemprop="name">ConcurrentHashMap 详解</h1>
+  <span></span> <a href="/tags/jdk/">jdk</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
     
-     
-       <p itemprop="description" >ConcurrentHashMap前言在jdk 1.5之前使用线程安全的Map集合，有两个选择，一个是HashTable，hashTable就是HashMap的加锁实现，其锁的粒度很大，其锁都是加整个对象上，性能较差。还有一个是使用Collections类的静态方法synchro</p>
-      
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
     
-    <time datetime="2016-01-28T05:09:41.000Z" itemprop="datePublished">2016-01-28</time>
-  </a>
-</section>
+      <a href="/2016/03/07/spring分析-3/" title="spring分析-3" itemprop="url">spring分析-3</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="廖忠强" target="_blank" itemprop="author">廖忠强</a>
+		
+  <p class="article-time">
+    <time datetime="2016-03-07T07:17:47.000Z" itemprop="datePublished"> 发表于 2016-03-07</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h4 id="MVC"><a href="#MVC" class="headerlink" title="MVC"></a>MVC</h4><p>作为一个MVC框架，必须回答一下几个问题  </p>
+<ul>
+<li>请求映射到控制器</li>
+<li>请求数据进行绑定</li>
+<li>视图渲染</li>
+</ul>
+<p>而spring mvc是如何解决这几个问题的呢？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2016/03/07/spring分析-3/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/spring/">spring</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/spring/">spring</a><a href="/tags/mvc/">mvc</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/03/04/CountDownLatch、CyclicBarrier和Semaphore/" title="CountDownLatch、CyclicBarrier和Semaphore" itemprop="url">CountDownLatch、CyclicBarrier和Semaphore</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="廖忠强" target="_blank" itemprop="author">廖忠强</a>
+		
+  <p class="article-time">
+    <time datetime="2016-03-04T05:35:05.000Z" itemprop="datePublished"> 发表于 2016-03-04</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>jdk 1.5中的java.util.concurrent包里面有一些非常有用的并发辅助类，这篇文章主要学习一下CountDownLatch、CyclicBarrier和Semaphore</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2016/03/04/CountDownLatch、CyclicBarrier和Semaphore/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/concurrent/">concurrent</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/concurrent/">concurrent</a><a href="/tags/jdk/">jdk</a><a href="/tags/源码分析/">源码分析</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/03/03/spring分析-2/" title="spring分析-2" itemprop="url">spring分析-2</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="廖忠强" target="_blank" itemprop="author">廖忠强</a>
+		
+  <p class="article-time">
+    <time datetime="2016-03-03T09:35:07.000Z" itemprop="datePublished"> 发表于 2016-03-03</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h4 id="Bean的实例化过程"><a href="#Bean的实例化过程" class="headerlink" title="Bean的实例化过程"></a>Bean的实例化过程</h4><p>AbstractBeanFactory的doGetBean方法</p>
+<pre><code>@SuppressWarnings(&quot;unchecked&quot;)
+protected &lt;T&gt; T doGetBean(
+        final String name, final Class&lt;T&gt; requiredType, final Object[] args, boolean typeCheckOnly)
+        throws BeansException {
+
+    //beanFactory名字转换 &amp;
+    final String beanName = transformedBeanName(name);
+    Object bean;
+
+    // 从缓存中获取
+    Object sharedInstance = getSingleton(beanName);
+    if (sharedInstance != null &amp;&amp; args == null) {
+        if (logger.isDebugEnabled()) {
+            if (isSingletonCurrentlyInCreation(beanName)) {
+                logger.debug(&quot;Returning eagerly cached instance of singleton bean &apos;&quot; + beanName +
+                        &quot;&apos; that is not fully initialized yet - a consequence of a circular reference&quot;);
+            }
+            else {
+                logger.debug(&quot;Returning cached instance of singleton bean &apos;&quot; + beanName + &quot;&apos;&quot;);
+            }
+        }
+        bean = getObjectForBeanInstance(sharedInstance, name, beanName, null);
+    }
+
+    else {
+        // Fail if we&apos;re already creating this bean instance:
+        // We&apos;re assumably within a circular reference.
+        if (isPrototypeCurrentlyInCreation(beanName)) {
+            throw new BeanCurrentlyInCreationException(beanName);
+        }
+
+        // Check if bean definition exists in this factory.
+        //查看该beanName是否存在，若不存在则去其父BeanFactory查找，如spring mvc的bean进行初始化时，mvc的beanFactory中的action需要注入service，而service一般放在spring的beanFactory管，故将spring的beanFactory 设置为mvc的父，则能在action中依赖注入service
+        BeanFactory parentBeanFactory = getParentBeanFactory();
+        if (parentBeanFactory != null &amp;&amp; !containsBeanDefinition(beanName)) {
+            // Not found -&gt; check parent.
+            String nameToLookup = originalBeanName(name);
+            if (args != null) {
+                // Delegation to parent with explicit args.
+                return (T) parentBeanFactory.getBean(nameToLookup, args);
+            }
+            else {
+                // No args -&gt; delegate to standard getBean method.
+                return parentBeanFactory.getBean(nameToLookup, requiredType);
+            }
+        }
+
+        if (!typeCheckOnly) {
+            markBeanAsCreated(beanName);
+        }
+
+        try {
+            final RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
+            checkMergedBeanDefinition(mbd, beanName, args);
+
+            // Guarantee initialization of beans that the current bean depends on.
+            String[] dependsOn = mbd.getDependsOn();
+            if (dependsOn != null) {
+                for (String dependsOnBean : dependsOn) {
+                    if (isDependent(beanName, dependsOnBean)) {
+                        throw new BeanCreationException(mbd.getResourceDescription(), beanName,
+                                &quot;Circular depends-on relationship between &apos;&quot; + beanName + &quot;&apos; and &apos;&quot; + dependsOnBean + &quot;&apos;&quot;);
+                    }
+                    registerDependentBean(dependsOnBean, beanName);
+                    getBean(dependsOnBean);
+                }
+            }
+
+            // Create bean instance.
+            if (mbd.isSingleton()) {
+                sharedInstance = getSingleton(beanName, new ObjectFactory&lt;Object&gt;() {
+                    @Override
+                    public Object getObject() throws BeansException {
+                        try {
+                            return createBean(beanName, mbd, args);
+                        }
+                        catch (BeansException ex) {
+                            // Explicitly remove instance from singleton cache: It might have been put there
+                            // eagerly by the creation process, to allow for circular reference resolution.
+                            // Also remove any beans that received a temporary reference to the bean.
+                            destroySingleton(beanName);
+                            throw ex;
+                        }
+                    }
+                });
+                bean = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
+            }
+
+            else if (mbd.isPrototype()) {
+                // It&apos;s a prototype -&gt; create a new instance.
+                Object prototypeInstance = null;
+                try {
+                    beforePrototypeCreation(beanName);
+                    prototypeInstance = createBean(beanName, mbd, args);
+                }
+                finally {
+                    afterPrototypeCreation(beanName);
+                }
+                bean = getObjectForBeanInstance(prototypeInstance, name, beanName, mbd);
+            }
+
+            else {
+                String scopeName = mbd.getScope();
+                final Scope scope = this.scopes.get(scopeName);
+                if (scope == null) {
+                    throw new IllegalStateException(&quot;No Scope registered for scope &apos;&quot; + scopeName + &quot;&apos;&quot;);
+                }
+                try {
+                    Object scopedInstance = scope.get(beanName, new ObjectFactory&lt;Object&gt;() {
+                        @Override
+                        public Object getObject() throws BeansException {
+                            beforePrototypeCreation(beanName);
+                            try {
+                                return createBean(beanName, mbd, args);
+                            }
+                            finally {
+                                afterPrototypeCreation(beanName);
+                            }
+                        }
+                    });
+                    bean = getObjectForBeanInstance(scopedInstance, name, beanName, mbd);
+                }
+                catch (IllegalStateException ex) {
+                    throw new BeanCreationException(beanName,
+                            &quot;Scope &apos;&quot; + scopeName + &quot;&apos; is not active for the current thread; &quot; +
+                            &quot;consider defining a scoped proxy for this bean if you intend to refer to it from a singleton&quot;,
+                            ex);
+                }
+            }
+        }
+        catch (BeansException ex) {
+            cleanupAfterBeanCreationFailure(beanName);
+            throw ex;
+        }
+    }
+</code></pre><p>1、AbstractAutowireCapableBeanFactory的createBean() 方法</p>
+<pre><code>@Override
+protected Object createBean(String beanName, RootBeanDefinition mbd, Object[] args) throws BeanCreationException {
+    RootBeanDefinition mbdToUse = mbd;
+    //解析出class
+    Class&lt;?&gt; resolvedClass = resolveBeanClass(mbd, beanName);
+    if (resolvedClass != null &amp;&amp; !mbd.hasBeanClass() &amp;&amp; mbd.getBeanClassName() != null) {
+        mbdToUse = new RootBeanDefinition(mbd);
+        mbdToUse.setBeanClass(resolvedClass);
+    }
+    //对注入方法做验证 抛出BeanDefinitionValidationException异常
+    mbdToUse.prepareMethodOverrides();
+    //1、第一个拓展点 执行InstantiationAwareBeanPostProcessors 的方法
+    Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
+    if (bean != null) {
+        return bean;
+    }
+    Object beanInstance = doCreateBean(beanName, mbdToUse, args);
+    return beanInstance;
+}
+</code></pre>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2016/03/03/spring分析-2/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/spring/">spring</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/spring/">spring</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/02/19/XSD/" title="xsd" itemprop="url">xsd</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="廖忠强" target="_blank" itemprop="author">廖忠强</a>
+		
+  <p class="article-time">
+    <time datetime="2016-02-19T03:26:07.000Z" itemprop="datePublished"> 发表于 2016-02-19</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>XML Schema Definition 缩写.可扩展标记语言架构是以可扩展标记语言（标准通用标记语言的子集）为基础的，它用于可替代文档类型定义（外语缩写：DTD）；一份XML schema文件描述了可扩展标记语言文档的结构。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2016/02/19/XSD/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/xml/">xml</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/xml/">xml</a><a href="/tags/XML-Schema/">XML Schema</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/02/15/spring分析-1/" title="spring分析-1" itemprop="url">spring分析-1</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="廖忠强" target="_blank" itemprop="author">廖忠强</a>
+		
+  <p class="article-time">
+    <time datetime="2016-02-15T06:47:10.000Z" itemprop="datePublished"> 发表于 2016-02-15</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>spring的结构如下图<br><img src="http://i12.tietuku.com/20212d186a46e77c.png" alt=""><br>由上图可以看出spring的核心部分是context、bean、core。而我们使用spring的原因是其IOC，IOC的核心就是bean，core包则可以理解为一个util包。所以我们来看看IOC是怎么实现的。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2016/02/15/spring分析-1/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/spring/">spring</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/spring/">spring</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/02/15/copyOnWriteArrayList详解/" title="copyOnWriteArrayList详解.md" itemprop="url">copyOnWriteArrayList详解.md</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="廖忠强" target="_blank" itemprop="author">廖忠强</a>
+		
+  <p class="article-time">
+    <time datetime="2016-02-15T02:54:47.000Z" itemprop="datePublished"> 发表于 2016-02-15</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>ArrayList 的一个线程安全的变体，其中所有可变操作（add、set 等等）都是通过对底层数组进行一次新的复制来实现的。 这一般需要很大的开销，但是当遍历操作的数量大大超过可变操作的数量时，这种方法可能比其他替代方法更 有效。在不能或不想进行同步遍历，但又需要从并发线程中排除冲突时，它也很有用。“快照”风格的迭代器方法在创建迭代器时使用了对数组状态的引用。此数组在迭代器的生存期内不会更改，因此不可能发生冲突，并且迭代器保证不会抛出 ConcurrentModificationException。创建迭代器以后，迭代器就不会反映列表的添加、移除或者更改。在迭代器上进行的元素更改操作（remove、set 和 add）不受支持。这些方法将抛出 UnsupportedOperationException。 允许使用所有元素，包括 null。 内存一致性效果：当存在其他并发 collection 时，将对象放入 CopyOnWriteArrayList 之前的线程中的操作 happen-before 随后通过另一线程从 CopyOnWriteArrayList 中访问或移除该元素的操作</p>
+<h4 id="方法分析"><a href="#方法分析" class="headerlink" title="方法分析"></a>方法分析</h4><pre><code>public boolean add(E e) {
+    //加锁
+    final ReentrantLock lock = this.lock;
+    lock.lock();
+    try {
+        Object[] elements = getArray();
+        int len = elements.length;
+        Object[] newElements = Arrays.copyOf(elements, len + 1);
+        newElements[len] = e;
+        setArray(newElements);
+        return true;
+    } finally {
+        lock.unlock();
+    }
+}
+</code></pre><p>通过其方法分析得到其所有增、删 操作都会加锁。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/concurrent/">concurrent</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/concurrent/">concurrent</a><a href="/tags/jdk/">jdk</a><a href="/tags/源码分析/">源码分析</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/01/29/eclipse等IDE是如何debug java程序/" title="eclipse等IDE是如何debug java程序?" itemprop="url">eclipse等IDE是如何debug java程序?</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="廖忠强" target="_blank" itemprop="author">廖忠强</a>
+		
+  <p class="article-time">
+    <time datetime="2016-01-29T01:46:07.000Z" itemprop="datePublished"> 发表于 2016-01-29</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h2 id="IDE是如何debug-java程序"><a href="#IDE是如何debug-java程序" class="headerlink" title="IDE是如何debug java程序"></a>IDE是如何debug java程序</h2><h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>最近在看看jdk源码，有的地方不是看的很明白，想debug jdk，但是发现debug进去看不到variables。想知道IDE是如何进行debug?<br>查看javac命令发现其有个参数-g的选项 是生成所有的调试信息。那看来编译的时候必须加上-g参数才能进行debug。那IDE是如何与JVM进行交互的呢?  </p>
+<h4 id="JPDA"><a href="#JPDA" class="headerlink" title="JPDA"></a>JPDA</h4><p>JPDA（Java Platform Debugger Architecture）是 Java 平台调试体系结构的缩写，通过 JPDA 提供的 API，开发人员可以方便灵活的搭建 Java 调试应用程序。 JPDA 主要由三个部分组成：Java 虚拟机工具接口（JVMTI），Java 调试线协议（JDWP），以及 Java 调试接口（JDI）<br>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2016/01/29/eclipse等IDE是如何debug java程序/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/IDE/">IDE</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/IDE/">IDE</a><a href="/tags/IDE原理/">IDE原理</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/01/28/concurrentHashMap-详解/" title="ConcurrentHashMap 详解" itemprop="url">ConcurrentHashMap 详解</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="廖忠强" target="_blank" itemprop="author">廖忠强</a>
+		
+  <p class="article-time">
+    <time datetime="2016-01-28T05:09:41.000Z" itemprop="datePublished"> 发表于 2016-01-28</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h2 id="ConcurrentHashMap"><a href="#ConcurrentHashMap" class="headerlink" title="ConcurrentHashMap"></a>ConcurrentHashMap</h2><h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>在jdk 1.5之前使用线程安全的Map集合，有两个选择，一个是HashTable，hashTable就是HashMap的加锁实现，其锁的粒度很大，其锁都是加整个对象上，性能较差。还有一个是使用Collections类的静态方法synchronizedMap 给hashMap加锁，其实质也是对map里的方法加对象锁。借鉴数据库的一些锁的实现,如表锁跟行锁,乐观锁、悲观锁，能不能实现一些粒度较小的锁呢？于是jdk1.5的java.util.concurrent包就给出了这样一个实现类ConcurrentHashMap。来分析一下它是怎么实现的</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2016/01/28/concurrentHashMap-详解/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/concurrent/">concurrent</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/concurrent/">concurrent</a><a href="/tags/jdk/">jdk</a><a href="/tags/源码分析/">源码分析</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
 
 
   <nav id="page-nav" class="clearfix">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
   </nav>
 
 </div>
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 
   
+
+
+  
 <div class="categorieslist">
-	<p class="asidetitle">Categories</p>
+	<p class="asidetitle">分类</p>
 		<ul>
 		
+		  
 			<li><a href="/categories/IDE/" title="IDE">IDE<sup>1</sup></a></li>
+		  
 		
+		  
 			<li><a href="/categories/concurrent/" title="concurrent">concurrent<sup>3</sup></a></li>
+		  
 		
+		  
 			<li><a href="/categories/jdk/" title="jdk">jdk<sup>9</sup></a></li>
+		  
 		
+		  
 			<li><a href="/categories/linux/" title="linux">linux<sup>3</sup></a></li>
+		  
 		
+		  
 			<li><a href="/categories/spring/" title="spring">spring<sup>3</sup></a></li>
+		  
 		
+		  
 			<li><a href="/categories/xml/" title="xml">xml<sup>1</sup></a></li>
+		  
 		
+		  
 			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>3</sup></a></li>
+		  
 		
 		</ul>
 </div>
@@ -247,36 +938,94 @@ protected &amp;lt;T&amp;gt; T doGetBean(
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
-			<li><a href="/tags/IDE/" title="IDE">IDE<sup>1</sup></a></li>
+			
+				<li><a href="/tags/jdk/" title="jdk">jdk<sup>12</sup></a></li>
+			
 		
-			<li><a href="/tags/IDE原理/" title="IDE原理">IDE原理<sup>1</sup></a></li>
+			
+				<li><a href="/tags/源码分析/" title="源码分析">源码分析<sup>10</sup></a></li>
+			
 		
-			<li><a href="/tags/XML-Schema/" title="XML Schema">XML Schema<sup>1</sup></a></li>
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>3</sup></a></li>
+			
 		
-			<li><a href="/tags/concurrent/" title="concurrent">concurrent<sup>3</sup></a></li>
+			
+				<li><a href="/tags/spring/" title="spring">spring<sup>3</sup></a></li>
+			
 		
-			<li><a href="/tags/http/" title="http">http<sup>1</sup></a></li>
+			
+				<li><a href="/tags/常用命令/" title="常用命令">常用命令<sup>3</sup></a></li>
+			
 		
-			<li><a href="/tags/jdk/" title="jdk">jdk<sup>12</sup></a></li>
+			
+				<li><a href="/tags/concurrent/" title="concurrent">concurrent<sup>3</sup></a></li>
+			
 		
-			<li><a href="/tags/linux/" title="linux">linux<sup>3</sup></a></li>
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>3</sup></a></li>
+			
 		
-			<li><a href="/tags/mvc/" title="mvc">mvc<sup>1</sup></a></li>
+			
+				<li><a href="/tags/XML-Schema/" title="XML Schema">XML Schema<sup>1</sup></a></li>
+			
 		
-			<li><a href="/tags/spring/" title="spring">spring<sup>3</sup></a></li>
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>1</sup></a></li>
+			
 		
-			<li><a href="/tags/xml/" title="xml">xml<sup>1</sup></a></li>
+			
+				<li><a href="/tags/IDE/" title="IDE">IDE<sup>1</sup></a></li>
+			
 		
-			<li><a href="/tags/常用命令/" title="常用命令">常用命令<sup>3</sup></a></li>
+			
+				<li><a href="/tags/IDE原理/" title="IDE原理">IDE原理<sup>1</sup></a></li>
+			
 		
-			<li><a href="/tags/源码分析/" title="源码分析">源码分析<sup>10</sup></a></li>
+			
+				<li><a href="/tags/http/" title="http">http<sup>1</sup></a></li>
+			
 		
-			<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>3</sup></a></li>
+			
+				<li><a href="/tags/mvc/" title="mvc">mvc<sup>1</sup></a></li>
+			
 		
 		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=b3593ceb&dpc=1"></iframe>
 </div>
 
 
@@ -291,21 +1040,42 @@ protected &amp;lt;T&amp;gt; T doGetBean(
 	</div>
 	
 	
-	<div class="social-font clearfix">
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
 		
 		
 		
 		
 		
 	</div>
-		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2016 
+			
 		
-		<a href="http://yoursite.com" target="_blank" title="John Doe">John Doe</a>
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="廖忠强">廖忠强</a>
+		
 		
 		</p>
 </div>
 </footer>
-    <script src="/js/jquery-2.1.0.min.js"></script>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function(){ 
   $('.navbar').click(function(){
@@ -323,18 +1093,6 @@ $(document).ready(function(){
       a = $('#asidepart'),
       c = $('.closeaside'),
       o = $('.openaside');
-  $(window).resize(function(){
-    getSize(); 
-    if (myWidth >= 1024) {
-      $('header nav').removeClass('shownav');
-    }else
-    {
-      m.removeClass('moveMain');
-      a.css('display', 'block').removeClass('fadeOut');
-      o.css('display', 'none');
-        
-    }
-  });
   c.click(function(){
     a.addClass('fadeOut').css('display', 'none');
     o.css('display', 'block').addClass('fadeIn');
@@ -348,6 +1106,18 @@ $(document).ready(function(){
   $(window).scroll(function(){
     o.css("top",Math.max(80,260-$(this).scrollTop()));
   });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+        
+    }
+  });
 });
 </script>
 
@@ -356,6 +1126,69 @@ $(document).ready(function(){
 
 
 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
 
   </body>
  </html>
